@@ -62,12 +62,9 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if(query != null)
-                {
+                if (query != null) {
                     fetchWeatherData(query);
-                }
-                else
-                {
+                } else {
                     Toast.makeText(MainActivity.this, "Please Enter A Valid City Name", Toast.LENGTH_SHORT).show();
                 }
                 return false;
@@ -80,13 +77,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void fetchWeatherData(String cityName){
+    public void fetchWeatherData(String cityName) {
         url = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=45db6c7ff523cb1c80f7416b61513aaf";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                if(response != null)
-                {
+                if (response != null) {
                     try {
                         location.setText(response.getString("name"));
 
@@ -98,9 +94,9 @@ public class MainActivity extends AppCompatActivity {
 
                         DecimalFormat df_obj = new DecimalFormat("#.##");
                         JSONObject main = response.getJSONObject("main");
-                        temperature.setText(df_obj.format(Float.parseFloat(main.getString("temp"))/10 )+ " ℃");
-                        maxTemp.setText("Max Temp: " + (Float.parseFloat(main.getString("temp_max"))/10) + " ℃");
-                        minTemp.setText("Min Temp: " + (Float.parseFloat(main.getString("temp_min"))/10) + " ℃");
+                        temperature.setText(df_obj.format(Float.parseFloat(main.getString("temp")) / 10) + " ℃");
+                        maxTemp.setText("Max Temp: " + (Float.parseFloat(main.getString("temp_max")) / 10) + " ℃");
+                        minTemp.setText("Min Temp: " + (Float.parseFloat(main.getString("temp_min")) / 10) + " ℃");
                         humidity.setText(main.getString("humidity") + " %");
                         sea.setText(main.getString("pressure") + " hPa");
 
@@ -123,16 +119,15 @@ public class MainActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
+                Toast.makeText(MainActivity.this, "You Are Offline", Toast.LENGTH_LONG).show();;
             }
         });
 
         weatherdata.add(request);
     }
 
-    public void changeImage(String condition){
-        switch (condition)
-        {
+    public void changeImage(String condition) {
+        switch (condition) {
             case "Clear Sky":
             case "Sunny":
             case "Clear":
@@ -174,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
         animationView.playAnimation();
     }
 
-    private String time(long timeStamp){
+    private String time(long timeStamp) {
         return new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date(timeStamp * 1000));
     }
 }
